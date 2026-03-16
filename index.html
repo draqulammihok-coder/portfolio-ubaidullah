@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google AI Studio App</title>
+    <script>
+      // Early patch to prevent "TypeError: Cannot set property fetch of #<Window> which has only a getter"
+      (function() {
+        try {
+          // 1. Try to make window.fetch writable
+          var descriptor = Object.getOwnPropertyDescriptor(window, 'fetch') || 
+                           Object.getOwnPropertyDescriptor(Object.getPrototypeOf(window), 'fetch');
+          
+          if (descriptor && (!descriptor.writable || !descriptor.configurable)) {
+            var originalFetch = window.fetch;
+            try {
+              Object.defineProperty(window, 'fetch', {
+                value: originalFetch,
+                writable: true,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {
+              // Fallback: if we can't redefine it, at least try to prevent errors from assignment
+              console.warn('Could not redefine fetch, attempting fallback');
+            }
+          }
+
+          // 2. Prevent common polyfills (like formdata-polyfill) from triggering a fetch patch
+          if (typeof FormData !== 'undefined' && !FormData.prototype.keys) {
+            FormData.prototype.keys = function() {
+              var keys = [];
+              this.forEach(function(v, k) { keys.push(k); });
+              var i = 0;
+              return {
+                next: function() {
+                  return i < keys.length ? { value: keys[i++], done: false } : { value: undefined, done: true };
+                },
+                [Symbol.iterator]: function() { return this; }
+              };
+            };
+          }
+        } catch (err) {
+          console.error('Fetch patch error:', err);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

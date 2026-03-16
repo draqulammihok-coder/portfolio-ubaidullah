@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary-bg: #FCFCFD;
+  --color-ink: #0F172A;
+  --color-accent: #7C6CFF;
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-primary-bg text-ink font-sans antialiased overflow-x-hidden;
+  }
+}
+
+.atmosphere {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: var(--color-primary-bg);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(124, 108, 255, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(79, 195, 255, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 124, 212, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(124, 255, 212, 0.1) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.5) 0px, transparent 50%);
+  filter: blur(80px);
+}
+
+.glass-card {
+  @apply bg-white/20 backdrop-blur-3xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.01)];
+}
+
+.glass-button {
+  @apply bg-white/80 backdrop-blur-md border border-white shadow-[0_2px_10px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] transition-all duration-500 active:scale-95;
+}
+
+.hero-title {
+  @apply font-display font-bold text-center uppercase tracking-[-0.04em] leading-[1.1];
+}
+
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.magnetic-wrap {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 15s ease infinite;
+}
+
+.section-padding {
+  @apply py-40 px-6 md:px-12 lg:px-24;
+}
+
+.status-badge {
+  @apply inline-flex items-center space-x-2 bg-white/90 backdrop-blur-sm border border-white/80 px-3 py-1 rounded-full shadow-sm;
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-ink to-ink/60;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-200 rounded-full hover:bg-gray-300 transition-colors;
+}
